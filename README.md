@@ -37,3 +37,4 @@ Text-to-speech functionality requires a browser that supports the Web Speech API
 
 This project is designed to be hosted on GitHub Pages. Each page can be accessed directly via its URL.
 
+
