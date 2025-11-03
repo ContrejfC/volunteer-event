@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translate Any Phrase - Volunteer Language Activity</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 15px;
+            background: #37216a;
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px 20px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #667eea;
+            line-height: 1.3;
+        }
+        .input-container {
+            margin: 20px 0;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #718096;
+            font-weight: 500;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .russian {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #2d3748;
+            line-height: 1.2;
+            word-wrap: break-word;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .phonetic {
+            font-size: 1.1rem;
+            color: #718096;
+            margin: 15px 0 30px;
+            font-style: italic;
+            line-height: 1.4;
+            min-height: 20px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .play-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 14px 35px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: auto;
+            max-width: 100%;
+        }
+        .play-button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .play-button:active {
+            transform: translateY(0);
+        }
+        .play-button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .play-button:disabled:hover {
+            box-shadow: none;
+        }
+        .speaker-icon {
+            font-size: 1.3rem;
+        }
+        .clear-button {
+            background: #fed7d7;
+            color: #c53030;
+            border: none;
+            border-radius: 50px;
+            padding: 14px 35px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .clear-button:hover {
+            background: #fc8181;
+            color: white;
+            transform: translateY(-2px);
+        }
+        .error-message {
+            display: none;
+            color: #e53e3e;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            padding: 0 10px;
+        }
+        .logo {
+            max-width: 120px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+        @media (min-width: 481px) {
+            .container {
+                padding: 40px;
+            }
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 30px;
+            }
+            .russian {
+                font-size: 3.5rem;
+                margin: 30px 0;
+                min-height: 80px;
+            }
+            .phonetic {
+                font-size: 1.5rem;
+                margin: 20px 0 40px;
+                min-height: 30px;
+            }
+            .play-button, .clear-button {
+                padding: 15px 40px;
+                font-size: 1.2rem;
+                gap: 10px;
+            }
+            .speaker-icon {
+                font-size: 1.5rem;
+            }
+            .error-message {
+                margin-top: 20px;
+                font-size: 0.9rem;
+            }
+            .logo {
+                max-width: 160px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="volunteer-logo.png" alt="Volunteers Weave Us Together Logo" class="logo">
+        <h1>Translate Any Phrase</h1>
+        
+        <div class="input-container">
+            <label for="inputText">Type your name or phrase:</label>
+            <input type="text" id="inputText" placeholder="Enter text here..." autocomplete="off">
+        </div>
+
+        <div class="russian" id="russianText">—</div>
+        <div class="phonetic" id="phoneticText">—</div>
+
+        <div class="button-group">
+            <button class="play-button" id="playButton" onclick="playAudio()" disabled>
+                <span class="speaker-icon">🔊</span>
+                Play Audio
+            </button>
+            <button class="clear-button" onclick="clearText()">
+                Clear
+            </button>
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            Sorry, your browser doesn't support text-to-speech.
+        </div>
+    </div>
+
+    <script>
+        // Transliteration mapping (English to Russian)
+        const transliterationMap = {
+            'a': 'а', 'b': 'б', 'c': 'ц', 'd': 'д', 'e': 'е',
+            'f': 'ф', 'g': 'г', 'h': 'х', 'i': 'и', 'j': 'ж',
+            'k': 'к', 'l': 'л', 'm': 'м', 'n': 'н', 'o': 'о',
+            'p': 'п', 'q': 'кв', 'r': 'р', 's': 'с', 't': 'т',
+            'u': 'у', 'v': 'в', 'w': 'в', 'x': 'кс', 'y': 'й',
+            'z': 'з', 'á': 'а', 'é': 'е', 'í': 'и', 'ó': 'о',
+            'ú': 'у', 'ñ': 'нь', 'ü': 'ю', 'ö': 'ё', 'ä': 'а'
+        };
+
+        const transliterationMapUpper = {
+            'A': 'А', 'B': 'Б', 'C': 'Ц', 'D': 'Д', 'E': 'Е',
+            'F': 'Ф', 'G': 'Г', 'H': 'Х', 'I': 'И', 'J': 'Ж',
+            'K': 'К', 'L': 'Л', 'M': 'М', 'N': 'Н', 'O': 'О',
+            'P': 'П', 'Q': 'Кв', 'R': 'Р', 'S': 'С', 'T': 'Т',
+            'U': 'У', 'V': 'В', 'W': 'В', 'X': 'Кс', 'Y': 'Й',
+            'Z': 'З', 'Á': 'А', 'É': 'Е', 'Í': 'И', 'Ó': 'О',
+            'Ú': 'У', 'Ñ': 'Нь', 'Ü': 'Ю', 'Ö': 'Ё', 'Ä': 'А'
+        };
+
+        // Reverse transliteration mapping (Russian to English phonetic)
+        const reverseTransliterationMap = {
+            'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd',
+            'е': 'ye', 'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и': 'i',
+            'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n',
+            'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't',
+            'у': 'u', 'ф': 'f', 'х': 'kh', 'ц': 'ts', 'ч': 'ch',
+            'ш': 'sh', 'щ': 'shch', 'ъ': '', 'ы': 'y', 'ь': '',
+            'э': 'e', 'ю': 'yu', 'я': 'ya',
+            'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'G', 'Д': 'D',
+            'Е': 'Ye', 'Ё': 'Yo', 'Ж': 'Zh', 'З': 'Z', 'И': 'I',
+            'Й': 'Y', 'К': 'K', 'Л': 'L', 'М': 'M', 'Н': 'N',
+            'О': 'O', 'П': 'P', 'Р': 'R', 'С': 'S', 'Т': 'T',
+            'У': 'U', 'Ф': 'F', 'Х': 'Kh', 'Ц': 'Ts', 'Ч': 'Ch',
+            'Ш': 'Sh', 'Щ': 'Shch', 'Ъ': '', 'Ы': 'Y', 'Ь': '',
+            'Э': 'E', 'Ю': 'Yu', 'Я': 'Ya'
+        };
+
+        function transliterateToRussian(text) {
+            let result = '';
+            for (let char of text) {
+                if (transliterationMapUpper[char]) {
+                    result += transliterationMapUpper[char];
+                } else if (transliterationMap[char.toLowerCase()]) {
+                    result += transliterationMap[char.toLowerCase()];
+                } else {
+                    result += char; // Keep spaces and special characters
+                }
+            }
+            return result;
+        }
+
+        function transliterateToPhonetic(russianText) {
+            let result = '';
+            for (let char of russianText) {
+                if (reverseTransliterationMap[char]) {
+                    result += reverseTransliterationMap[char];
+                } else {
+                    result += char; // Keep spaces and special characters
+                }
+            }
+            return result;
+        }
+
+        function updateDisplay() {
+            const inputText = document.getElementById('inputText').value.trim();
+            const russianTextEl = document.getElementById('russianText');
+            const phoneticTextEl = document.getElementById('phoneticText');
+            const playButton = document.getElementById('playButton');
+
+            if (inputText === '') {
+                russianTextEl.textContent = '—';
+                phoneticTextEl.textContent = '—';
+                playButton.disabled = true;
+            } else {
+                const russianText = transliterateToRussian(inputText);
+                const phoneticText = transliterateToPhonetic(russianText);
+                
+                russianTextEl.textContent = russianText;
+                phoneticTextEl.textContent = phoneticText;
+                playButton.disabled = false;
+            }
+        }
+
+        function playAudio() {
+            if ('speechSynthesis' in window) {
+                const russianText = document.getElementById('russianText').textContent;
+                
+                if (russianText && russianText !== '—') {
+                    // Cancel any ongoing speech
+                    window.speechSynthesis.cancel();
+                    
+                    const utterance = new SpeechSynthesisUtterance(russianText);
+                    utterance.lang = 'ru-RU';
+                    utterance.rate = 0.8; // Slightly slower for learning
+                    utterance.pitch = 1;
+                    
+                    window.speechSynthesis.speak(utterance);
+                }
+            } else {
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        }
+
+        function clearText() {
+            document.getElementById('inputText').value = '';
+            updateDisplay();
+            document.getElementById('inputText').focus();
+        }
+
+        // Add event listeners
+        document.getElementById('inputText').addEventListener('input', updateDisplay);
+        document.getElementById('inputText').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                playAudio();
+            }
+        });
+
+        // Focus the input field on load
+        document.getElementById('inputText').focus();
+    </script>
+</body>
+</html>
+
