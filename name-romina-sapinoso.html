@@ -90,22 +90,23 @@
             line-height: 1.4;
             text-shadow: 0 1px 5px rgba(0,0,0,0.2);
         }
-        .play-button {
+                .play-button {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 50px;
-            padding: 14px 35px;
-            font-size: 1.1rem;
+            padding: 18px 45px;
+            font-size: 1.3rem;
             cursor: pointer;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             width: auto;
             max-width: 100%;
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
             font-weight: 600;
+            min-height: 56px;
         }
         .play-button:hover {
             background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
@@ -139,37 +140,45 @@
         .play-slow-button:active {
             transform: translateY(0);
         }
-        .speed-control {
-            margin: 20px 0;
+                .speed-control {
+            margin: 25px 0;
             text-align: center;
+            width: 100%;
         }
-        .speed-label {
+                .speed-label {
             display: block;
             color: rgba(255, 255, 255, 0.9);
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            font-weight: 500;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 600;
             text-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        .speed-slider-container {
+                .speed-slider-container {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
-            margin: 15px 0;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        .speed-value {
+                .speed-value {
             color: white;
-            font-weight: 600;
-            min-width: 50px;
+            font-weight: 700;
+            min-width: 60px;
+            font-size: 1.5rem;
             text-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
-        input[type="range"] {
+                input[type="range"] {
             -webkit-appearance: none;
             appearance: none;
-            width: 200px;
-            height: 8px;
-            border-radius: 5px;
+            width: 100%;
+            max-width: 300px;
+            height: 12px;
+            border-radius: 6px;
             background: rgba(255, 255, 255, 0.3);
             outline: none;
             opacity: 0.9;
@@ -178,33 +187,35 @@
         input[type="range"]:hover {
             opacity: 1;
         }
-        input[type="range"]::-webkit-slider-thumb {
+                input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+            border: 3px solid rgba(255, 255, 255, 0.6);
         }
-        input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
+                input[type="range"]::-moz-range-thumb {
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+            border: 3px solid rgba(255, 255, 255, 0.6);
         }
-        .speed-labels {
+                .speed-labels {
             display: flex;
             justify-content: space-between;
-            width: 200px;
-            margin: 5px auto 0;
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.7);
+            width: 100%;
+            max-width: 300px;
+            margin: 10px auto 0;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
         }
         
         
@@ -242,37 +253,45 @@
         .play-slow-button:active {
             transform: translateY(0);
         }
-        .speed-control {
-            margin: 20px 0;
+                .speed-control {
+            margin: 25px 0;
             text-align: center;
+            width: 100%;
         }
-        .speed-label {
+                .speed-label {
             display: block;
             color: rgba(255, 255, 255, 0.9);
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            font-weight: 500;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 600;
             text-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        .speed-slider-container {
+                .speed-slider-container {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
-            margin: 15px 0;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        .speed-value {
+                .speed-value {
             color: white;
-            font-weight: 600;
-            min-width: 50px;
+            font-weight: 700;
+            min-width: 60px;
+            font-size: 1.5rem;
             text-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
-        input[type="range"] {
+                input[type="range"] {
             -webkit-appearance: none;
             appearance: none;
-            width: 200px;
-            height: 8px;
-            border-radius: 5px;
+            width: 100%;
+            max-width: 300px;
+            height: 12px;
+            border-radius: 6px;
             background: rgba(255, 255, 255, 0.3);
             outline: none;
             opacity: 0.9;
@@ -281,33 +300,35 @@
         input[type="range"]:hover {
             opacity: 1;
         }
-        input[type="range"]::-webkit-slider-thumb {
+                input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+            border: 3px solid rgba(255, 255, 255, 0.6);
         }
-        input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
+                input[type="range"]::-moz-range-thumb {
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+            border: 3px solid rgba(255, 255, 255, 0.6);
         }
-        .speed-labels {
+                .speed-labels {
             display: flex;
             justify-content: space-between;
-            width: 200px;
-            margin: 5px auto 0;
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.7);
+            width: 100%;
+            max-width: 300px;
+            margin: 10px auto 0;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
         }
         
         
@@ -328,7 +349,67 @@
             margin-bottom: 15px;
             filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2));
         }
+                        @media (max-width: 480px) {
+            .container {
+                padding: 25px 15px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .english-name {
+                font-size: 1.3rem;
+            }
+            .russian {
+                font-size: 2.2rem;
+            }
+            .phonetic {
+                font-size: 1.2rem;
+            }
+            .speed-control {
+                margin: 20px 0;
+            }
+            .speed-slider-container {
+                gap: 15px;
+            }
+            .play-button {
+                width: 100%;
+                max-width: 100%;
+                padding: 16px 30px;
+            }
+        }
         @media (min-width: 481px) {
+            .speed-label {
+                font-size: 1.4rem;
+            }
+            .speed-value {
+                font-size: 1.8rem;
+                min-width: 70px;
+            }
+            input[type="range"] {
+                max-width: 350px;
+                height: 14px;
+            }
+            input[type="range"]::-webkit-slider-thumb {
+                width: 32px;
+                height: 32px;
+            }
+            input[type="range"]::-moz-range-thumb {
+                width: 32px;
+                height: 32px;
+            }
+            .speed-labels {
+                max-width: 350px;
+                font-size: 1rem;
+            }
+            .speed-slider-container {
+                max-width: 450px;
+            }
+            .play-button {
+                padding: 20px 50px;
+                font-size: 1.4rem;
+                min-height: 64px;
+            }
+            
             .container {
                 padding: 40px;
             }
