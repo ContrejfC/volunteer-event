@@ -113,8 +113,68 @@
             box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
         }
         .play-button:active {
+        }
+        .play-slow-button {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 14px 35px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: auto;
+            max-width: 100%;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+            font-weight: 600;
+        }
+        .play-slow-button:hover {
+            background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(245, 158, 11, 0.5);
+        }
+        .play-slow-button:active {
             transform: translateY(0);
         }
+        
+                .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+                .play-button:active {
+            transform: translateY(0);
+        }
+        .play-slow-button {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 14px 35px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: auto;
+            max-width: 100%;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+            font-weight: 600;
+        }
+        .play-slow-button:hover {
+            background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(245, 158, 11, 0.5);
+        }
+        .play-slow-button:active {
+            transform: translateY(0);
+        }
+        
         .speaker-icon {
             font-size: 1.3rem;
         }
@@ -176,10 +236,16 @@
         <div class="english-name">Sister Romina Sapinoso</div>
         <div class="russian">Сестра Ромина Сапиносо</div>
         <div class="phonetic">Sister Romina Sapinoso</div>
-        <button class="play-button" onclick="playAudio()">
-            <span class="speaker-icon">🔊</span>
-            Play Audio
-        </button>
+                <div class="button-group">
+            <button class="play-button" onclick="playAudio()">
+                <span class="speaker-icon">🔊</span>
+                Play Audio
+            </button>
+            <button class="play-slow-button" onclick="playAudioSlow()">
+                <span class="speaker-icon">🐌</span>
+                Play Slow
+            </button>
+        </div>
         <div class="error-message" id="errorMessage">
             Sorry, your browser doesn't support text-to-speech.
         </div>
@@ -194,6 +260,21 @@
                 const utterance = new SpeechSynthesisUtterance('Сестра Ромина Сапиносо');
                 utterance.lang = 'ru-RU';
                 utterance.rate = 0.8; // Slightly slower for learning
+                utterance.pitch = 1;
+                
+                window.speechSynthesis.speak(utterance);
+            } else {
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        }
+        function playAudioSlow() {
+            if ('speechSynthesis' in window) {
+                // Cancel any ongoing speech
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance('Сестра Ромина Сапиносо');
+                utterance.lang = 'ru-RU';
+                utterance.rate = 0.5; // Much slower for learning
                 utterance.pitch = 1;
                 
                 window.speechSynthesis.speak(utterance);
