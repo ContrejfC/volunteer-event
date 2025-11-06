@@ -310,6 +310,12 @@
         .play-button:active {
             transform: translateY(0);
         }
+        .play-button:disabled,
+        .play-button.disabled {
+            opacity: 0.7 !important;
+            cursor: not-allowed !important;
+            pointer-events: none;
+        }
         .play-slow-button {
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             color: white;
@@ -650,9 +656,17 @@
     <script>
         // Function to get a warmer-sounding Russian voice
         function getWarmRussianVoice() {
-            const voices = window.speechSynthesis.getVoices();
+            // Force reload voices (iOS Safari sometimes needs this)
+            let voices = window.speechSynthesis.getVoices();
+            
+            // If no voices, try again (they might be loading)
+            if (voices.length === 0) {
+                // This shouldn't happen if voices were loaded, but just in case
+                voices = window.speechSynthesis.getVoices();
+            }
+            
             const russianVoices = voices.filter(voice => 
-                voice.lang.startsWith('ru') || voice.lang.includes('Russian')
+                voice.lang && (voice.lang.startsWith('ru') || voice.lang.includes('Russian'))
             );
             
             if (russianVoices.length === 0) return null;
@@ -679,108 +693,175 @@
         
         function playAudio() {
             if (!('speechSynthesis' in window)) {
-                document.getElementById('errorMessage').style.display = 'block';
+                alert('Your browser does not support text-to-speech. Please try a different browser.');
                 return;
             }
             
-            try {
-                // Cancel any ongoing speech
-                window.speechSynthesis.cancel();
+            const playButton = document.querySelector('.play-button');
+            const russianText = 'Йоел Хандорф';
+            let attemptCount = 0;
+            const maxAttempts = 3;
+            
+            function attemptPlay(useSimple = false) {
+                attemptCount++;
                 
-                // Get speed from slider and map 1-5 to 0.2-1.0
-                const speedSlider = document.getElementById('speedSlider');
-                const sliderValue = speedSlider ? parseInt(speedSlider.value) : 3;
-                // Map 1->0.2, 2->0.4, 3->0.6, 4->0.8, 5->1.0
-                const speed = 0.2 + (sliderValue - 1) * 0.2;
-                
-                const utterance = new SpeechSynthesisUtterance('Йоел Хандорф');
-                utterance.lang = 'ru-RU';
-                utterance.rate = speed;
-                utterance.pitch = 1.1;
-                utterance.volume = 1.0;
-                
-                // Add event handlers for debugging
-                utterance.onstart = function() {
-                    console.log('Speech started successfully');
-                };
-                
-                utterance.onerror = function(event) {
-                    console.error('Speech error:', event.error);
-                    // Try fallback without voice selection
-                    const fallback = new SpeechSynthesisUtterance('Йоел Хандорф');
-                    fallback.lang = 'ru-RU';
-                    fallback.rate = speed;
-                    fallback.pitch = 1.0;
-                    fallback.volume = 1.0;
-                    window.speechSynthesis.speak(fallback);
-                };
-                
-                // Try to get a warmer voice, but don't block if voices aren't loaded yet
-                // On mobile, voices might not be loaded immediately, so we proceed anyway
                 try {
-                    const voices = window.speechSynthesis.getVoices();
-                    if (voices && voices.length > 0) {
-                        const warmVoice = getWarmRussianVoice();
-                        if (warmVoice) {
-                            utterance.voice = warmVoice;
-                        } else {
-                            // Use first Russian voice or just use default
-                            const russianVoices = voices.filter(v => v.lang && v.lang.startsWith('ru'));
-                            if (russianVoices.length > 0) {
-                                utterance.voice = russianVoices[0];
+                    // Cancel any ongoing speech
+                    window.speechSynthesis.cancel();
+                    
+                    // Small delay to ensure cancel is processed (especially on iOS)
+                    setTimeout(function() {
+                        try {
+                            // Get speed from slider and map 1-5 to 0.2-1.0
+                            const speedSlider = document.getElementById('speedSlider');
+                            const sliderValue = speedSlider ? parseInt(speedSlider.value) : 3;
+                            const speed = 0.2 + (sliderValue - 1) * 0.2;
+                            
+                            const utterance = new SpeechSynthesisUtterance(russianText);
+                            utterance.lang = 'ru-RU';
+                            utterance.rate = speed;
+                            utterance.pitch = 1.1;
+                            utterance.volume = 1.0;
+                            
+                            // Visual feedback - disable button
+                            if (playButton) {
+                                playButton.classList.add('disabled');
                             }
-                            // If no Russian voice, browser will use default - that's fine
+                            
+                            // Event handlers
+                            utterance.onstart = function() {
+                                console.log('✓ Speech started successfully');
+                            };
+                            
+                            utterance.onend = function() {
+                                console.log('✓ Speech completed');
+                                if (playButton) {
+                                    playButton.classList.remove('disabled');
+                                }
+                            };
+                            
+                            utterance.onerror = function(event) {
+                                console.error('✗ Speech error:', event.error, event);
+                                if (playButton) {
+                                    playButton.classList.remove('disabled');
+                                }
+                                
+                                // Try simple fallback if not already using it
+                                if (!useSimple && attemptCount < maxAttempts) {
+                                    console.log('Trying simple fallback...');
+                                    attemptPlay(true);
+                                    return;
+                                }
+                                
+                                // Last resort: show user-friendly message
+                                if (attemptCount >= maxAttempts) {
+                                    alert('Unable to play audio. Please:\n1. Check device volume\n2. Make sure device is not on silent mode\n3. Try refreshing the page');
+                                }
+                            };
+                            
+                            // Voice selection - simplified and safe
+                            if (!useSimple) {
+                                try {
+                                    // Force reload voices (iOS Safari sometimes needs this)
+                                    const voices = window.speechSynthesis.getVoices();
+                                    if (voices && voices.length > 0) {
+                                        // Try warm voice first
+                                        const warmVoice = getWarmRussianVoice();
+                                        if (warmVoice) {
+                                            utterance.voice = warmVoice;
+                                        } else {
+                                            // Fallback to any Russian voice
+                                            const russianVoices = voices.filter(v => 
+                                                v.lang && (v.lang.startsWith('ru') || v.lang.includes('Russian'))
+                                            );
+                                            if (russianVoices.length > 0) {
+                                                utterance.voice = russianVoices[0];
+                                            }
+                                        }
+                                    }
+                                } catch (voiceError) {
+                                    console.log('Voice selection skipped, using default');
+                                }
+                            }
+                            // If useSimple is true, don't set voice - let browser use default
+                            
+                            // Queue the utterance
+                            window.speechSynthesis.speak(utterance);
+                            
+                            // Verify it was queued (iOS Safari sometimes silently fails)
+                            setTimeout(function() {
+                                if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+                                    console.log('✓ Utterance queued successfully');
+                                } else if (attemptCount < maxAttempts && !useSimple) {
+                                    console.log('Utterance not queued, retrying with simple approach...');
+                                    attemptPlay(true);
+                                }
+                            }, 100);
+                            
+                        } catch (error) {
+                            console.error('Error creating utterance:', error);
+                            if (playButton) {
+                                playButton.classList.remove('disabled');
+                            }
+                            if (attemptCount >= maxAttempts) {
+                                alert('Unable to play audio. Please refresh the page and try again.');
+                            }
                         }
+                    }, 50);
+                    
+                } catch (error) {
+                    console.error('Error in attemptPlay:', error);
+                    if (playButton) {
+                        playButton.classList.remove('disabled');
                     }
-                } catch (voiceError) {
-                    console.log('Voice selection skipped, using default voice');
-                    // Continue without setting voice - browser will use default
-                }
-                
-                // Speak immediately - don't wait for voices
-                // The browser will use the default Russian voice if no voice is set
-                window.speechSynthesis.speak(utterance);
-                
-            } catch (error) {
-                console.error('Error in playAudio:', error);
-                // Ultimate fallback
-                try {
-                    const fallback = new SpeechSynthesisUtterance('Йоел Хандорф');
-                    fallback.lang = 'ru-RU';
-                    fallback.rate = 0.8;
-                    fallback.volume = 1.0;
-                    window.speechSynthesis.speak(fallback);
-                } catch (e) {
-                    console.error('Fallback also failed:', e);
-                    alert('Unable to play audio. Please check your device volume and browser permissions.');
+                    if (attemptCount >= maxAttempts) {
+                        alert('Unable to play audio. Please refresh the page and try again.');
+                    }
                 }
             }
+            
+            // Start the first attempt
+            attemptPlay(false);
         }
         
-        // Ensure voices are loaded before trying to select one
-        // Some browsers load voices asynchronously
-        let voicesLoaded = false;
+        // Ensure voices are loaded - critical for mobile browsers
+        // Some browsers (especially iOS Safari) load voices asynchronously
         if ('speechSynthesis' in window) {
-            // Load voices immediately if available
-            let voices = window.speechSynthesis.getVoices();
-            if (voices.length > 0) {
-                voicesLoaded = true;
-            } else {
-                // Wait for voices to load
-                window.speechSynthesis.onvoiceschanged = function() {
-                    voices = window.speechSynthesis.getVoices();
-                    if (voices.length > 0) {
-                        voicesLoaded = true;
-                    }
-                };
-                // Also try loading after a short delay (some browsers need this)
-                setTimeout(function() {
-                    voices = window.speechSynthesis.getVoices();
-                    if (voices.length > 0) {
-                        voicesLoaded = true;
-                    }
-                }, 1000);
+            // Force voice loading on page load
+            function loadVoices() {
+                const voices = window.speechSynthesis.getVoices();
+                console.log('Voices loaded:', voices.length);
+                return voices.length > 0;
             }
+            
+            // Try multiple times to load voices (iOS Safari needs this)
+            let loadAttempts = 0;
+            const maxLoadAttempts = 10;
+            
+            function attemptVoiceLoad() {
+                if (loadVoices() || loadAttempts >= maxLoadAttempts) {
+                    return;
+                }
+                loadAttempts++;
+                setTimeout(attemptVoiceLoad, 200);
+            }
+            
+            // Start loading immediately
+            attemptVoiceLoad();
+            
+            // Listen for voice changes (Chrome/Firefox)
+            window.speechSynthesis.onvoiceschanged = function() {
+                loadVoices();
+            };
+            
+            // Force reload on user interaction (iOS Safari workaround)
+            document.addEventListener('touchstart', function() {
+                loadVoices();
+            }, { once: true });
+            
+            document.addEventListener('click', function() {
+                loadVoices();
+            }, { once: true });
         }
         
     

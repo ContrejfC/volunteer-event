@@ -147,6 +147,11 @@
         .play-button:active {
             transform: translateY(0);
         }
+        .play-button:disabled,
+        .play-button.disabled {
+            opacity: 0.7 !important;
+            cursor: not-allowed !important;
+            pointer-events: none;
         .speaker-icon {
             font-size: 1.3rem;
         }
@@ -596,35 +601,48 @@
             }
         }
         
-        // Ensure voices are loaded before trying to select one
-        // Some browsers load voices asynchronously
-        let voicesLoaded = false;
+        // Ensure voices are loaded - critical for mobile browsers
+        // Some browsers (especially iOS Safari) load voices asynchronously
         if ('speechSynthesis' in window) {
-            // Load voices immediately if available
-            let voices = window.speechSynthesis.getVoices();
-            if (voices.length > 0) {
-                voicesLoaded = true;
-            } else {
-                // Wait for voices to load
-                window.speechSynthesis.onvoiceschanged = function() {
-                    voices = window.speechSynthesis.getVoices();
-                    if (voices.length > 0) {
-                        voicesLoaded = true;
-                    }
-                };
-                // Also try loading after a short delay (some browsers need this)
-                setTimeout(function() {
-                    voices = window.speechSynthesis.getVoices();
-                    if (voices.length > 0) {
-                        voicesLoaded = true;
-                    }
-                }, 1000);
+            // Force voice loading on page load
+            function loadVoices() {
+                const voices = window.speechSynthesis.getVoices();
+                console.log('Voices loaded:', voices.length);
+                return voices.length > 0;
             }
+            
+            // Try multiple times to load voices (iOS Safari needs this)
+            let loadAttempts = 0;
+            const maxLoadAttempts = 10;
+            
+            function attemptVoiceLoad() {
+                if (loadVoices() || loadAttempts >= maxLoadAttempts) {
+                    return;
+                }
+                loadAttempts++;
+                setTimeout(attemptVoiceLoad, 200);
+            }
+            
+            // Start loading immediately
+            attemptVoiceLoad();
+            
+            // Listen for voice changes (Chrome/Firefox)
+            window.speechSynthesis.onvoiceschanged = function() {
+                loadVoices();
+            };
+            
+            // Force reload on user interaction (iOS Safari workaround)
+            document.addEventListener('touchstart', function() {
+                loadVoices();
+            }, { once: true });
+            
+            document.addEventListener('click', function() {
+                loadVoices();
+            }, { once: true });
         }
+        
     
-        
-        
-        // Update speed value display when slider changes
+ when slider changes
         document.getElementById('speedSlider').addEventListener('input', function(e) {
             const value = e.target.value;
             document.getElementById('speedValue').textContent = value;

@@ -147,6 +147,11 @@
         .play-button:active {
             transform: translateY(0);
         }
+        .play-button:disabled,
+        .play-button.disabled {
+            opacity: 0.7 !important;
+            cursor: not-allowed !important;
+            pointer-events: none;
         .speaker-icon {
             font-size: 1.3rem;
         }
