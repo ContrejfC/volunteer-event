@@ -18,7 +18,7 @@
             justify-content: flex-start;
             min-height: 100vh;
             padding: 15px;
-            background: linear-gradient(135deg, #a8c8ec 0%, #c8b3e8 25%, #e8c8d8 50%, #b8d8e8 75%, #d8c8e8 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
             color: #333;
@@ -33,7 +33,7 @@
             height: 200%;
             top: -50%;
             left: -50%;
-            background: radial-gradient(circle, rgba(184, 168, 216, 0.15) 0%, rgba(155, 181, 216, 0.1) 50%, transparent 70%);
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
             animation: float 20s ease-in-out infinite;
         }
         @keyframes gradientShift {
@@ -43,31 +43,49 @@
         }
         @keyframes float {
             0%, 100% { transform: translate(0, 0) rotate(0deg); }
-        @keyframes gentlePulse {
-            0%, 100% { opacity: 1; }
+        
             50% { opacity: 0.95; }
         }
-        .container {
-            animation: gentlePulse 4s ease-in-out infinite;
-        }
+        
         
             33% { transform: translate(30px, -30px) rotate(5deg); }
             66% { transform: translate(-30px, 30px) rotate(-5deg); }
         }
                 .container {
-            background: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 2px solid rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 20px;
             padding: 30px 20px 40px 20px;
             max-width: 500px;
             width: 100%;
-            box-shadow: 0 20px 60px rgba(184, 168, 216, 0.2), 0 0 40px rgba(155, 181, 216, 0.1), inset 0 1px 0 rgba(255,255,255,0.5);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.5);
             text-align: center;
             position: relative;
             z-index: 1;
         }
+                .container::after {
+            content: 'Rooted in Mercy';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-12deg);
+            font-size: 7rem;
+            font-weight: 200;
+            color: rgba(255, 255, 255, 0.15);
+            z-index: 0;
+            pointer-events: none;
+            white-space: nowrap;
+            letter-spacing: 1rem;
+            font-family: 'Georgia', serif;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .container > * {
+            position: relative;
+            z-index: 1;
+        }
+        
                 h1 {
             font-size: 1.5rem;
             margin-bottom: 20px;
@@ -205,7 +223,7 @@
             outline: none;
             opacity: 1;
             transition: opacity 0.2s;
-            border: 2px solid rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
         input[type="range"]:hover {
             opacity: 1;
@@ -322,7 +340,7 @@
             outline: none;
             opacity: 1;
             transition: opacity 0.2s;
-            border: 2px solid rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
         input[type="range"]:hover {
             opacity: 1;
@@ -466,30 +484,14 @@
                 font-size: 1.8rem;
             }
         }
-            .mercy-accent {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 2rem;
-            opacity: 0.3;
-            color: rgba(184, 168, 216, 0.6);
-        }
-        .container::before {
-            content: '💙';
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 1.5rem;
-            opacity: 0.2;
-            z-index: 0;
-        }
+            
+        
         </style>
 </head>
 <body>
     <div class="container">
         <img src="volunteer-logo.png" alt="Volunteers Weave Us Together Logo" class="logo">
         <h1>My Name</h1>
-        <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px; font-style: italic; text-shadow: 0 1px 3px rgba(0,0,0,0.2);">Rooted in Mercy</p>
         <div class="english-name">Sister Romina Sapinoso</div>
         <div class="russian">Сестра Ромина Сапиносо</div>
         <div class="phonetic">Sister Romina Sapinoso</div>
