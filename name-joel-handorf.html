@@ -178,13 +178,44 @@
         }
         
         
-                .button-group {
+        .button-group {
             display: flex;
             gap: 10px;
             justify-content: center;
             flex-wrap: wrap;
         }
-                .play-button:active {
+        .play-button {
+            background: linear-gradient(135deg, #9bb5d8 0%, #b8a8d8 100%) !important;
+            color: white !important;
+            border: 3px solid rgba(255, 255, 255, 0.6) !important;
+            border-radius: 50px;
+            padding: 20px 50px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: auto;
+            max-width: 100%;
+            box-shadow: 0 10px 30px rgba(155, 181, 216, 0.5);
+            font-weight: 700;
+            min-height: 64px;
+            margin: 15px auto 10px auto;
+            position: sticky;
+            bottom: 20px;
+            z-index: 10;
+        }
+        .play-button:hover {
+            background: linear-gradient(135deg, #b8a8d8 0%, #9bb5d8 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(155, 181, 216, 0.6);
+            border-color: rgba(255, 255, 255, 0.7);
+        }
+        .play-button:active {
             transform: translateY(0);
         }
         .play-slow-button {
@@ -343,10 +374,10 @@
                 padding: 10px;
             }
             .play-button {
-                padding: 18px 40px;
-                font-size: 1.2rem;
-                min-height: 56px;
-                margin: 12px auto 8px auto;
+                padding: 20px 50px;
+                font-size: 1.4rem;
+                min-height: 64px;
+                margin: 15px auto 10px auto;
             }
         }
         </style>
