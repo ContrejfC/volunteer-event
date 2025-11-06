@@ -100,7 +100,7 @@
             line-height: 1.4;
             text-shadow: 0 1px 5px rgba(0,0,0,0.2);
         }
-                                                .play-button {
+                                                        .play-button {
             background: linear-gradient(135deg, #9bb5d8 0%, #b8a8d8 100%) !important;
             color: white !important;
             border: 3px solid rgba(255, 255, 255, 0.6) !important;
@@ -109,9 +109,7 @@
             font-size: 1.4rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex !important;
-            margin-left: auto;
-            margin-right: auto;
+            display: inline-flex !important;
             visibility: visible !important;
             opacity: 1 !important;
             align-items: center;
@@ -122,8 +120,7 @@
             box-shadow: 0 10px 30px rgba(155, 181, 216, 0.5);
             font-weight: 700;
             min-height: 64px;
-            margin-top: 30px;
-            margin-bottom: 20px;
+            margin: 30px auto 20px auto;
             position: sticky;
             bottom: 20px;
             z-index: 10;
@@ -399,7 +396,7 @@
             text-align: center;
             width: 100%;
         }
-                                    .play-button {
+                                            .play-button {
             background: linear-gradient(135deg, #9bb5d8 0%, #b8a8d8 100%) !important;
             color: white !important;
             border: 3px solid rgba(255, 255, 255, 0.6) !important;
@@ -408,9 +405,7 @@
             font-size: 1.4rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex !important;
-            margin-left: auto;
-            margin-right: auto;
+            display: inline-flex !important;
             visibility: visible !important;
             opacity: 1 !important;
             align-items: center;
@@ -421,8 +416,7 @@
             box-shadow: 0 10px 30px rgba(155, 181, 216, 0.5);
             font-weight: 700;
             min-height: 64px;
-            margin-top: 30px;
-            margin-bottom: 20px;
+            margin: 30px auto 20px auto;
             position: sticky;
             bottom: 20px;
             z-index: 10;
@@ -522,10 +516,12 @@
         </div>
         <div style="margin: 30px 0 20px 0; border-top: 2px solid rgba(255, 255, 255, 0.2); padding-top: 20px;">
         </div>
+        <div style="text-align: center; width: 100%;">
         <button class="play-button" onclick="playAudio()" style="display: inline-flex !important; visibility: visible !important;">
             <span class="speaker-icon">🔊</span>
             <span style="font-size: 1.4rem; font-weight: 700;">Play Audio</span>
         </button>
+        </div>
         <div class="error-message" id="errorMessage">
             Sorry, your browser doesn't support text-to-speech.
         </div>
