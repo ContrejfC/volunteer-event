@@ -378,6 +378,10 @@
                 margin-bottom: 8px;
             }
             .speed-slider-container {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                justify-content: center;
                 margin: 12px 0;
                 padding: 10px;
             }
@@ -429,6 +433,35 @@
     </div>
 
     <script>
+        // Function to get a warmer-sounding Russian voice
+        function getWarmRussianVoice() {
+            const voices = window.speechSynthesis.getVoices();
+            const russianVoices = voices.filter(voice => 
+                voice.lang.startsWith('ru') || voice.lang.includes('Russian')
+            );
+            
+            if (russianVoices.length === 0) return null;
+            
+            // Prefer female voices (typically warmer sounding)
+            // Look for voices with names containing keywords that suggest warmth
+            const warmKeywords = ['female', 'woman', 'женский', 'Yelena', 'Milena', 'Katya', 'Svetlana', 'Anna'];
+            const femaleVoice = russianVoices.find(voice => 
+                warmKeywords.some(keyword => 
+                    voice.name.toLowerCase().includes(keyword.toLowerCase())
+                )
+            );
+            
+            if (femaleVoice) return femaleVoice;
+            
+            // If no specific female voice found, prefer voices that aren't marked as male
+            const nonMaleVoice = russianVoices.find(voice => 
+                !voice.name.toLowerCase().includes('male') && 
+                !voice.name.toLowerCase().includes('мужской')
+            );
+            
+            return nonMaleVoice || russianVoices[0];
+        }
+        
         function playAudio() {
             if ('speechSynthesis' in window) {
                 // Cancel any ongoing speech
@@ -443,11 +476,33 @@
                 const utterance = new SpeechSynthesisUtterance('Йоел Хандорф');
                 utterance.lang = 'ru-RU';
                 utterance.rate = speed;
-                utterance.pitch = 1;
+                // Use a slightly higher pitch (1.1) for a warmer, friendlier tone
+                utterance.pitch = 1.1;
+                
+                // Try to select a warmer voice
+                // Voices may not be loaded immediately, so we'll try to get them
+                // If voices aren't loaded, the browser will use the default Russian voice
+                const warmVoice = getWarmRussianVoice();
+                if (warmVoice) {
+                    utterance.voice = warmVoice;
+                }
                 
                 window.speechSynthesis.speak(utterance);
             } else {
                 document.getElementById('errorMessage').style.display = 'block';
+            }
+        }
+        
+        // Ensure voices are loaded before trying to select one
+        // Some browsers load voices asynchronously
+        if ('speechSynthesis' in window) {
+            // Load voices immediately if available
+            let voices = window.speechSynthesis.getVoices();
+            if (voices.length === 0) {
+                // Wait for voices to load
+                window.speechSynthesis.onvoiceschanged = function() {
+                    voices = window.speechSynthesis.getVoices();
+                };
             }
         }
         
