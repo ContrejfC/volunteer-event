@@ -173,9 +173,9 @@
     <div class="container">
         <img src="volunteer-logo.png" alt="Volunteers Weave Us Together Logo" class="logo">
         <h1>My Name</h1>
-        <div class="english-name">Sr. Romina Sapinoso</div>
-        <div class="russian">Ср. Ромина Сапиносо</div>
-        <div class="phonetic">Sr. Romina Sapinoso</div>
+        <div class="english-name">Sister Romina Sapinoso</div>
+        <div class="russian">Сестра Ромина Сапиносо</div>
+        <div class="phonetic">Sister Romina Sapinoso</div>
         <button class="play-button" onclick="playAudio()">
             <span class="speaker-icon">🔊</span>
             Play Audio
@@ -191,7 +191,7 @@
                 // Cancel any ongoing speech
                 window.speechSynthesis.cancel();
                 
-                const utterance = new SpeechSynthesisUtterance('Ср. Ромина Сапиносо');
+                const utterance = new SpeechSynthesisUtterance('Сестра Ромина Сапиносо');
                 utterance.lang = 'ru-RU';
                 utterance.rate = 0.8; // Slightly slower for learning
                 utterance.pitch = 1;
