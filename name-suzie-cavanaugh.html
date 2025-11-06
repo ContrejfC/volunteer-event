@@ -304,6 +304,150 @@
             font-weight: 500;
         }
 
+        
+        @media (max-width: 480px) {
+            html {
+                overflow-x: hidden;
+                overflow-y: auto;
+                width: 100%;
+                height: 100vh;
+                height: -webkit-fill-available;
+                margin: 0;
+                padding: 0;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+                background-size: 400% 400%;
+                animation: gradientShift 15s ease infinite;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+            }
+            body {
+                padding: 0;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                box-sizing: border-box;
+                overflow-x: hidden;
+                overflow-y: auto;
+                width: 100%;
+                min-height: 100vh;
+                min-height: -webkit-fill-available;
+                background: transparent;
+                position: relative;
+            }
+            body::before {
+            content: '';
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            height: -webkit-fill-available;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -2;
+        }
+            body::after {
+                position: fixed;
+                background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+                z-index: -1;
+            }
+            .platform-wrapper {
+                padding: 0;
+                margin: 0 auto;
+                margin-top: max(env(safe-area-inset-top, 0px), 15px);
+                margin-bottom: max(env(safe-area-inset-bottom, 0px), 15px);
+                width: 100%;
+                max-width: calc(100vw - 30px);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                box-sizing: border-box;
+            }
+            .glass-platform {
+                display: none;
+            }
+            .container {
+                padding: 15px 10px 20px 10px;
+                width: 100%;
+                max-width: 100%;
+                margin: 0 auto;
+                background: rgba(255, 255, 255, 0.25);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 2px solid rgba(255, 255, 255, 0.4);
+                border-radius: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            }
+            .logo-mercy-container {
+                margin-bottom: 8px;
+                width: 100%;
+                align-items: center;
+                gap: 10px;
+            }
+            .mercy-text {
+                font-size: 1.5rem;
+            }
+            h1 {
+                font-size: 1.3rem;
+                margin-bottom: 8px;
+            }
+            .english-name {
+                font-size: 1rem;
+                margin-bottom: 6px;
+            }
+            .russian {
+                font-size: 1.5rem;
+                margin: 8px 0;
+            }
+            .phonetic {
+                font-size: 0.9rem;
+                margin: 6px 0 10px;
+            }
+            .speed-control {
+                margin: 10px 0 12px 0;
+            }
+            .speed-label {
+                font-size: 0.9rem;
+                margin-bottom: 8px;
+            }
+            .speed-slider-container {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                justify-content: center;
+                margin: 12px 0;
+                padding: 10px;
+            }
+            .play-button {
+                padding: 20px 50px;
+                font-size: 1.4rem;
+                min-height: 64px;
+                margin: 15px auto 10px auto;
+                box-shadow: 
+                    0 0 15px rgba(155, 107, 216, 0.6),
+                    0 0 30px rgba(155, 107, 216, 0.4),
+                    0 0 45px rgba(155, 107, 216, 0.3),
+                    0 8px 25px rgba(0, 0, 0, 0.3),
+                    0 12px 40px rgba(155, 107, 216, 0.2);
+            }
+            .play-button:hover {
+                box-shadow: 
+                    0 0 25px rgba(155, 107, 216, 0.8),
+                    0 0 40px rgba(155, 107, 216, 0.6),
+                    0 0 55px rgba(155, 107, 216, 0.4),
+                    0 12px 35px rgba(0, 0, 0, 0.4),
+                    0 18px 50px rgba(155, 107, 216, 0.3);
+            }
+        }
         </style>
 </head>
 <body>
