@@ -170,9 +170,93 @@
             margin-bottom: 15px;
             filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2));
         }
-        @media (min-width: 481px) {
+        /* Small tablets and large phones (481px - 768px) */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .container {
+                padding: 30px 25px;
+                max-width: 90%;
+            }
+            h1 {
+                font-size: 1.3rem;
+                margin-bottom: 20px;
+            }
+            .english-name {
+                font-size: 1.7rem;
+            }
+            .russian {
+                font-size: 2.8rem;
+                margin: 25px 0;
+            }
+            .phonetic {
+                font-size: 1.3rem;
+                margin: 15px 0 30px;
+            }
+            .play-button {
+                padding: 18px 45px;
+                font-size: 1.3rem;
+                gap: 11px;
+            }
+            .speaker-icon {
+                font-size: 1.4rem;
+            }
+            .error-message {
+                margin-top: 18px;
+                font-size: 0.85rem;
+            }
+            .logo {
+                max-width: 140px;
+            }
+            .mercy-text {
+                font-size: 1.8rem;
+            }
+        }
+        
+        /* Tablets and small desktops (769px - 1024px) */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 35px 30px;
+                max-width: 600px;
+            }
+            h1 {
+                font-size: 1.4rem;
+                margin-bottom: 25px;
+            }
+            .english-name {
+                font-size: 1.9rem;
+            }
+            .russian {
+                font-size: 3.2rem;
+                margin: 28px 0;
+            }
+            .phonetic {
+                font-size: 1.4rem;
+                margin: 18px 0 35px;
+            }
+            .play-button {
+                padding: 16px 42px;
+                font-size: 1.25rem;
+                gap: 10px;
+            }
+            .speaker-icon {
+                font-size: 1.45rem;
+            }
+            .error-message {
+                margin-top: 19px;
+                font-size: 0.88rem;
+            }
+            .logo {
+                max-width: 150px;
+            }
+            .mercy-text {
+                font-size: 1.9rem;
+            }
+        }
+        
+        /* Large desktops (1025px and up) */
+        @media (min-width: 1025px) {
             .container {
                 padding: 40px;
+                max-width: 500px;
             }
             h1 {
                 font-size: 1.5rem;
@@ -203,6 +287,9 @@
             }
             .logo {
                 max-width: 160px;
+            }
+            .mercy-text {
+                font-size: 2rem;
             }
         }
             .logo-mercy-container {
