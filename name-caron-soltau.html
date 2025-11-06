@@ -492,46 +492,85 @@
     </div>
 
     <script>
+        // Function to get a warmer-sounding Russian voice
+        function getWarmRussianVoice() {
+            // Force reload voices (iOS Safari sometimes needs this)
+            let voices = window.speechSynthesis.getVoices();
+            
+            // If no voices, try again (they might be loading)
+            if (voices.length === 0) {
+                // This shouldn't happen if voices were loaded, but just in case
+                voices = window.speechSynthesis.getVoices();
+            }
+            
+            const russianVoices = voices.filter(voice => 
+                voice.lang && (voice.lang.startsWith('ru') || voice.lang.includes('Russian'))
+            );
+            
+            if (russianVoices.length === 0) return null;
+            
+            // Prefer female voices (typically warmer sounding)
+            // Look for voices with names containing keywords that suggest warmth
+            const warmKeywords = ['female', 'woman', 'женский', 'Yelena', 'Milena', 'Katya', 'Svetlana', 'Anna'];
+            const femaleVoice = russianVoices.find(voice => 
+                warmKeywords.some(keyword => 
+                    voice.name.toLowerCase().includes(keyword.toLowerCase())
+                )
+            );
+            
+            if (femaleVoice) return femaleVoice;
+            
+            // If no specific female voice found, prefer voices that aren't marked as male
+            const nonMaleVoice = russianVoices.find(voice => 
+                !voice.name.toLowerCase().includes('male') && 
+                !voice.name.toLowerCase().includes('мужской')
+            );
+            
+            return nonMaleVoice || russianVoices[0];
+        }
+        
         function playAudio() {
             if (!('speechSynthesis' in window)) {
-                document.getElementById('errorMessage').style.display = 'block';
+                alert('Your browser does not support text-to-speech. Please try a different browser.');
                 return;
             }
             
+            const playButton = document.querySelector('.play-button');
+            const russianText = 'Царон Солтау';
+            
+            // Disable button immediately for visual feedback
+            if (playButton) {
+                playButton.classList.add('disabled');
+            }
+            
+            // CRITICAL: On iOS Safari, we must call speak() directly from user interaction
             try {
-                // Cancel any ongoing speech
                 window.speechSynthesis.cancel();
                 
-                // Get speed from slider and map 1-5 to 0.2-1.0
                 const speedSlider = document.getElementById('speedSlider');
                 const sliderValue = speedSlider ? parseInt(speedSlider.value) : 3;
-                // Map 1->0.2, 2->0.4, 3->0.6, 4->0.8, 5->1.0
                 const speed = 0.2 + (sliderValue - 1) * 0.2;
                 
-                const utterance = new SpeechSynthesisUtterance('Царон Солтау');
+                const utterance = new SpeechSynthesisUtterance(russianText);
                 utterance.lang = 'ru-RU';
                 utterance.rate = speed;
                 utterance.pitch = 1.1;
                 utterance.volume = 1.0;
                 
-                // Add event handlers for debugging
                 utterance.onstart = function() {
-                    console.log('Speech started successfully');
+                    console.log('✓ Speech started');
+                };
+                
+                utterance.onend = function() {
+                    if (playButton) playButton.classList.remove('disabled');
                 };
                 
                 utterance.onerror = function(event) {
-                    console.error('Speech error:', event.error);
-                    // Try fallback without voice selection
-                    const fallback = new SpeechSynthesisUtterance('Царон Солтау');
-                    fallback.lang = 'ru-RU';
-                    fallback.rate = speed;
-                    fallback.pitch = 1.0;
-                    fallback.volume = 1.0;
-                    window.speechSynthesis.speak(fallback);
+                    console.error('✗ Speech error:', event.error);
+                    if (playButton) playButton.classList.remove('disabled');
+                    alert('Unable to play audio. Please check device volume and ensure not on silent mode.');
                 };
                 
-                // Try to get a warmer voice, but don't block if voices aren't loaded yet
-                // On mobile, voices might not be loaded immediately, so we proceed anyway
                 try {
                     const voices = window.speechSynthesis.getVoices();
                     if (voices && voices.length > 0) {
@@ -539,71 +578,28 @@
                         if (warmVoice) {
                             utterance.voice = warmVoice;
                         } else {
-                            // Use first Russian voice or just use default
-                            const russianVoices = voices.filter(v => v.lang && v.lang.startsWith('ru'));
+                            const russianVoices = voices.filter(v => 
+                                v.lang && (v.lang.startsWith('ru') || v.lang.includes('Russian'))
+                            );
                             if (russianVoices.length > 0) {
                                 utterance.voice = russianVoices[0];
                             }
-                            // If no Russian voice, browser will use default - that's fine
-                        } else {
-                document.getElementById('errorMessage').style.display = 'block';
+                        }
+                    }
+                } catch (e) {
+                    console.log('Voice selection skipped');
+                }
+                
+                // CRITICAL: Call speak() synchronously from user interaction (iOS requirement)
+                window.speechSynthesis.speak(utterance);
+                console.log('Utterance queued');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                if (playButton) playButton.classList.remove('disabled');
+                alert('Unable to play audio. Please refresh and try again.');
             }
         }
-    
-        
-        
-        // Update speed value display when slider changes
-        document.getElementById('speedSlider').addEventListener('input', function(e) {
-            const value = e.target.value;
-            document.getElementById('speedValue').textContent = value;
-        });
-        
-        // Initialize speed value display
-        document.getElementById('speedValue').textContent = document.getElementById('speedSlider').value;
-        // Prevent zoom gestures
-        let lastTouchEnd = 0;
-        let lastTap = 0;
-        
-        document.addEventListener('touchstart', function(event) {
-            if (event.touches.length > 1) {
-                event.preventDefault();
-            }
-        }, { passive: false });
-        
-        document.addEventListener('touchend', function(event) {
-            const now = (new Date()).getTime();
-            // Prevent double-tap zoom
-            if (now - lastTap < 500 && now - lastTap > 0) {
-                event.preventDefault();
-            }
-            // Prevent pinch zoom
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
-            lastTap = now;
-        }, { passive: false });
-        
-        document.addEventListener('gesturestart', function(event) {
-            event.preventDefault();
-        }, { passive: false });
-        
-        document.addEventListener('gesturechange', function(event) {
-            event.preventDefault();
-        }, { passive: false });
-        
-        document.addEventListener('gestureend', function(event) {
-            event.preventDefault();
-        }, { passive: false });
-        
-        // Disable zoom on wheel
-        document.addEventListener('wheel', function(event) {
-            if (event.ctrlKey) {
-                event.preventDefault();
-            }
-        }, { passive: false });
-        
-        // Fix viewport scale if somehow changed
         function fixViewportScale() {
             const viewport = document.querySelector('meta[name=viewport]');
             if (viewport) {

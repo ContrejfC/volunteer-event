@@ -227,17 +227,67 @@
     </div>
 
     <script>
-                        function playAudio() {
+        function playAudio() {
             if (!('speechSynthesis' in window)) {
                 alert('Your browser does not support text-to-speech. Please try a different browser.');
                 return;
             }
             
-            const russianText = 'До свидания';
             const playButton = document.querySelector('.play-button');
-            let attemptCount = 0;
-            const maxAttempts = 3;
+            const russianText = 'До свидания';
             
+            if (playButton) playButton.classList.add('disabled');
+            
+            try {
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(russianText);
+                utterance.lang = 'ru-RU';
+                utterance.rate = 0.8;
+                utterance.pitch = 1.1;
+                utterance.volume = 1.0;
+                
+                utterance.onstart = function() {
+                    console.log('✓ Speech started');
+                };
+                
+                utterance.onend = function() {
+                    if (playButton) playButton.classList.remove('disabled');
+                };
+                
+                utterance.onerror = function(event) {
+                    console.error('✗ Speech error:', event.error);
+                    if (playButton) playButton.classList.remove('disabled');
+                    alert('Unable to play audio. Please check device volume.');
+                };
+                
+                try {
+                    const voices = window.speechSynthesis.getVoices();
+                    if (voices && voices.length > 0) {
+                        const russianVoices = voices.filter(v => 
+                            v.lang && (v.lang.startsWith('ru') || v.lang.includes('Russian'))
+                        );
+                        if (russianVoices.length > 0) {
+                            const femaleVoice = russianVoices.find(v => 
+                                v.name.toLowerCase().includes('female') || 
+                                v.name.toLowerCase().includes('woman')
+                            );
+                            utterance.voice = femaleVoice || russianVoices[0];
+                        }
+                    }
+                } catch (e) {
+                    console.log('Voice selection skipped');
+                }
+                
+                window.speechSynthesis.speak(utterance);
+                console.log('Utterance queued');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                if (playButton) playButton.classList.remove('disabled');
+                alert('Unable to play audio. Please refresh and try again.');
+            }
+        }
             function attemptPlay(useSimple = false) {
                 attemptCount++;
                 
