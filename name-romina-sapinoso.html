@@ -373,11 +373,11 @@
         <div class="russian">Сестра Ромина Сапиносо</div>
         <div class="phonetic">Sister Romina Sapinoso</div>
                         <div class="speed-control">
-            <label class="speed-label" for="speedSlider">Pronunciation Speed:</label>
+            <label class="speed-label" for="speedSlider">Pronunciation Speed (1 = Slowest, 5 = Fastest):</label>
             <div class="speed-slider-container">
-                <span class="speed-value" id="speedValue">0.5x</span>
-                <input type="range" id="speedSlider" min="0.3" max="1.2" step="0.1" value="0.5">
-                <span class="speed-value">1.2x</span>
+                <span class="speed-value" id="speedValue">3</span>
+                <input type="range" id="speedSlider" min="1" max="5" step="1" value="3">
+                <span class="speed-value">5</span>
             </div>
             <div class="speed-labels">
                 <span>Slow</span>
@@ -399,9 +399,11 @@
                 // Cancel any ongoing speech
                 window.speechSynthesis.cancel();
                 
-                // Get speed from slider
+                // Get speed from slider and map 1-5 to 0.2-1.0
                 const speedSlider = document.getElementById('speedSlider');
-                const speed = parseFloat(speedSlider.value);
+                const sliderValue = parseInt(speedSlider.value);
+                // Map 1->0.2, 2->0.4, 3->0.6, 4->0.8, 5->1.0
+                const speed = 0.2 + (sliderValue - 1) * 0.2;
                 
                 const utterance = new SpeechSynthesisUtterance('Сестра Ромина Сапиносо');
                 utterance.lang = 'ru-RU';
@@ -417,12 +419,12 @@
     
         // Update speed value display when slider changes
         document.getElementById('speedSlider').addEventListener('input', function(e) {
-            const speed = parseFloat(e.target.value);
-            document.getElementById('speedValue').textContent = speed.toFixed(1) + 'x';
+            const value = e.target.value;
+            document.getElementById('speedValue').textContent = value;
         });
         
         // Initialize speed value display
-        document.getElementById('speedValue').textContent = document.getElementById('speedSlider').value + 'x';
+        document.getElementById('speedValue').textContent = document.getElementById('speedSlider').value;
         </script>
 </body>
 </html>
