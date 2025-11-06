@@ -488,27 +488,59 @@
 
     <script>
         function playAudio() {
-            if ('speechSynthesis' in window) {
+            if (!('speechSynthesis' in window)) {
+                document.getElementById('errorMessage').style.display = 'block';
+                return;
+            }
+            
+            try {
                 // Cancel any ongoing speech
                 window.speechSynthesis.cancel();
                 
                 // Get speed from slider and map 1-5 to 0.2-1.0
                 const speedSlider = document.getElementById('speedSlider');
-                const sliderValue = parseInt(speedSlider.value);
+                const sliderValue = speedSlider ? parseInt(speedSlider.value) : 3;
                 // Map 1->0.2, 2->0.4, 3->0.6, 4->0.8, 5->1.0
                 const speed = 0.2 + (sliderValue - 1) * 0.2;
                 
                 const utterance = new SpeechSynthesisUtterance('Цабрина Аттал');
                 utterance.lang = 'ru-RU';
                 utterance.rate = speed;
-                // Use a slightly higher pitch (1.1) for a warmer, friendlier tone
                 utterance.pitch = 1.1;
+                utterance.volume = 1.0;
                 
-                window.speechSynthesis.speak(utterance);
-            } else {
-                document.getElementById('errorMessage').style.display = 'block';
-            }
-        } else {
+                // Add event handlers for debugging
+                utterance.onstart = function() {
+                    console.log('Speech started successfully');
+                };
+                
+                utterance.onerror = function(event) {
+                    console.error('Speech error:', event.error);
+                    // Try fallback without voice selection
+                    const fallback = new SpeechSynthesisUtterance('Цабрина Аттал');
+                    fallback.lang = 'ru-RU';
+                    fallback.rate = speed;
+                    fallback.pitch = 1.0;
+                    fallback.volume = 1.0;
+                    window.speechSynthesis.speak(fallback);
+                };
+                
+                // Try to get a warmer voice, but don't block if voices aren't loaded yet
+                // On mobile, voices might not be loaded immediately, so we proceed anyway
+                try {
+                    const voices = window.speechSynthesis.getVoices();
+                    if (voices && voices.length > 0) {
+                        const warmVoice = getWarmRussianVoice();
+                        if (warmVoice) {
+                            utterance.voice = warmVoice;
+                        } else {
+                            // Use first Russian voice or just use default
+                            const russianVoices = voices.filter(v => v.lang && v.lang.startsWith('ru'));
+                            if (russianVoices.length > 0) {
+                                utterance.voice = russianVoices[0];
+                            }
+                            // If no Russian voice, browser will use default - that's fine
+                        } else {
                 document.getElementById('errorMessage').style.display = 'block';
             }
         }
