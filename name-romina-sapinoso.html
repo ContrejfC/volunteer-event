@@ -139,6 +139,74 @@
         .play-slow-button:active {
             transform: translateY(0);
         }
+        .speed-control {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .speed-label {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            font-weight: 500;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .speed-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        .speed-value {
+            color: white;
+            font-weight: 600;
+            min-width: 50px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 200px;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+        input[type="range"]:hover {
+            opacity: 1;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        .speed-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 200px;
+            margin: 5px auto 0;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
         
                 .button-group {
             display: flex;
@@ -174,6 +242,74 @@
         .play-slow-button:active {
             transform: translateY(0);
         }
+        .speed-control {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .speed-label {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            font-weight: 500;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .speed-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        .speed-value {
+            color: white;
+            font-weight: 600;
+            min-width: 50px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 200px;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+        input[type="range"]:hover {
+            opacity: 1;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        .speed-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 200px;
+            margin: 5px auto 0;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
         
         .speaker-icon {
             font-size: 1.3rem;
@@ -236,16 +372,22 @@
         <div class="english-name">Sister Romina Sapinoso</div>
         <div class="russian">Сестра Ромина Сапиносо</div>
         <div class="phonetic">Sister Romina Sapinoso</div>
-                <div class="button-group">
-            <button class="play-button" onclick="playAudio()">
-                <span class="speaker-icon">🔊</span>
-                Play Audio
-            </button>
-            <button class="play-slow-button" onclick="playAudioSlow()">
-                <span class="speaker-icon">🐌</span>
-                Play Slow
-            </button>
+                        <div class="speed-control">
+            <label class="speed-label" for="speedSlider">Pronunciation Speed:</label>
+            <div class="speed-slider-container">
+                <span class="speed-value" id="speedValue">0.5x</span>
+                <input type="range" id="speedSlider" min="0.3" max="1.2" step="0.1" value="0.5">
+                <span class="speed-value">1.2x</span>
+            </div>
+            <div class="speed-labels">
+                <span>Slow</span>
+                <span>Fast</span>
+            </div>
         </div>
+        <button class="play-button" onclick="playAudio()">
+            <span class="speaker-icon">🔊</span>
+            Play Audio
+        </button>
         <div class="error-message" id="errorMessage">
             Sorry, your browser doesn't support text-to-speech.
         </div>
@@ -257,9 +399,13 @@
                 // Cancel any ongoing speech
                 window.speechSynthesis.cancel();
                 
+                // Get speed from slider
+                const speedSlider = document.getElementById('speedSlider');
+                const speed = parseFloat(speedSlider.value);
+                
                 const utterance = new SpeechSynthesisUtterance('Сестра Ромина Сапиносо');
                 utterance.lang = 'ru-RU';
-                utterance.rate = 0.8; // Slightly slower for learning
+                utterance.rate = speed;
                 utterance.pitch = 1;
                 
                 window.speechSynthesis.speak(utterance);
@@ -267,21 +413,16 @@
                 document.getElementById('errorMessage').style.display = 'block';
             }
         }
-        function playAudioSlow() {
-            if ('speechSynthesis' in window) {
-                // Cancel any ongoing speech
-                window.speechSynthesis.cancel();
-                
-                const utterance = new SpeechSynthesisUtterance('Сестра Ромина Сапиносо');
-                utterance.lang = 'ru-RU';
-                utterance.rate = 0.3; // Much slower for learning
-                utterance.pitch = 1;
-                
-                window.speechSynthesis.speak(utterance);
-            } else {
-                document.getElementById('errorMessage').style.display = 'block';
-            }
-        }
-    </script>
+        
+    
+        // Update speed value display when slider changes
+        document.getElementById('speedSlider').addEventListener('input', function(e) {
+            const speed = parseFloat(e.target.value);
+            document.getElementById('speedValue').textContent = speed.toFixed(1) + 'x';
+        });
+        
+        // Initialize speed value display
+        document.getElementById('speedValue').textContent = document.getElementById('speedSlider').value + 'x';
+        </script>
 </body>
 </html>
