@@ -497,17 +497,20 @@
                 position: relative;
             }
             body::before {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                height: -webkit-fill-available;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
-                background-size: 400% 400%;
-                animation: gradientShift 15s ease infinite;
-                z-index: -2;
-            }
+            content: '';
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            height: -webkit-fill-available;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -2;
+        }
             body::after {
                 position: fixed;
                 background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
